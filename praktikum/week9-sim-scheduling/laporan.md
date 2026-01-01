@@ -129,36 +129,45 @@ Hasil simulasi algoritma FCFS menunjukkan nilai rata-rata *waiting time* sebesar
 
 ---   
 **Kelebihan dan keterbatasan simulasi.**
+
 **Kelebihan:**
-- Mempermudah perhitungan *start time*, *finish time*, *turnaround         time*, dan *waiting time* secara otomatis
-- Mengurangi kemungkinan kesalahan yang sering terjadi pada perhitungan    manual
+- Mempermudah perhitungan *start time*, *finish time*, *turnaround time*, dan *waiting time* secara otomatis
+- Mengurangi kemungkinan kesalahan yang sering terjadi pada perhitungan manual
 - Mudah dimodifikasi untuk menguji berbagai dataset proses yang berbeda
 
 **Keterbatasan:**
-- Tidak sepenuhnya mencerminkan kondisi sistem operasi nyata karena        belum mempertimbangkan *context switching* dan waktu tunggu I/O
-- Kurang efisien untuk proses dengan burst time pendek karena adanya       *convoy effect*
+- Tidak sepenuhnya mencerminkan kondisi sistem operasi nyata karena belum mempertimbangkan *context switching* dan      waktu tunggu I/O
+- Kurang efisien untuk proses dengan burst time pendek karena adanya *convoy effect*
 
 ---
 
 ## Kesimpulan
-Tuliskan 2–3 poin kesimpulan dari praktikum ini.
+Dari praktikum ini, tujuan utama untuk membuat program simulasi penjadwalan CPU berhasil dicapai. Praktikum memberikan pengalaman langsung dalam memahami alur penjadwalan FCFS, mulai dari membaca dataset hingga menampilkan hasil perhitungan secara otomatis.
+
+Beberapa hal yang diperoleh dari praktikum ini antara lain:
+* Memasukkan dan membaca data proses dengan tepat.
+* Mengurutkan proses berdasarkan arrival time sesuai algoritma FCFS.
+* Menghitung waiting time dan turnaround time secara otomatis.
+* Menampilkan hasil dalam tabel yang terstruktur, memudahkan analisis dan perbandingan dengan perhitungan manual.
+
+Secara keseluruhan, praktikum ini memperkuat pemahaman tentang konsep FCFS, menunjukkan cara kerja penjadwalan CPU dalam simulasi, serta memberikan wawasan mengenai efisiensi CPU dan fenomena seperti convoy effect.
 
 ---
 
 ## Quiz
 **1. Mengapa simulasi diperlukan untuk menguji algoritma scheduling?**
 
-   Simulasi diperlukan untuk menguji algoritma scheduling karena dapat      mengevaluasi kinerjanya secara realistis dengan meniru kondisi kerja     sistem yang sebenarnya, serta memungkinkan perbandingan beberapa         algoritma tanpa harus langsung diterapkan pada sistem operasi nyata.
+   Simulasi diperlukan untuk menguji algoritma scheduling karena dapat mengevaluasi kinerjanya secara realistis          dengan meniru kondisi kerja sistem yang sebenarnya, serta memungkinkan perbandingan beberapa algoritma tanpa harus    langsung diterapkan pada sistem operasi nyata.
    
 ---
 **2. Apa perbedaan hasil simulasi dengan perhitungan manual jika dataset besar?**
 
-   Perhitungan manual pada dataset besar hanya akurat untuk kasus           sederhana dan terbatas, sedangkan simulasi mampu menangani data          yang kompleks dan banyak sehingga hasilnya lebih realistis serta         mendekati kondisi nyata sistem.
+   Perhitungan manual pada dataset besar hanya akurat untuk kasus sederhana dan terbatas, sedangkan simulasi mampu       menangani data yang kompleks dan banyak sehingga hasilnya lebih realistis serta mendekati kondisi nyata sistem.
    
 ---
 **3. Algoritma mana yang lebih mudah diimplementasikan? Jelaskan.**
 
-  Algoritma yang paling mudah diimplementasikan adalah First Come First    Served (FCFS). Hal ini karena FCFS menjalankan proses sesuai urutan      kedatangan tanpa perlu perhitungan tambahan seperti prioritas,           prediksi CPU burst, atau preemption. Struktur datanya sederhana, cukup   menggunakan satu antrian (ready queue), sehingga mudah dipahami          dan diterapkan. Namun, meskipun sederhana, FCFS memiliki kelemahan       karena dapat menyebabkan proses pendek menunggu lama jika berada di      belakang proses yang berdurasi panjang.
+  Algoritma yang paling mudah diimplementasikan adalah First Come First Served (FCFS). Hal ini karena FCFS              menjalankan proses sesuai urutan kedatangan tanpa perlu perhitungan tambahan seperti prioritas, prediksi CPU burst,   atau preemption. Struktur datanya sederhana, cukup   menggunakan satu antrian (ready queue), sehingga mudah           dipahami dan diterapkan. Namun, meskipun sederhana, FCFS memiliki kelemahan karena dapat menyebabkan proses pendek    menunggu lama jika berada di belakang proses yang berdurasi panjang.
 
 ---
 
