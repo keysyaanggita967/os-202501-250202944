@@ -100,28 +100,99 @@ Topik: Docker – Resource Limit (CPU & Memori)
 ## Kode / Perintah
 Tuliskan potongan kode atau perintah utama:
 ```bash
-uname -a
-lsmod | head
-dmesg | head
+docker ps
+docker build -t week13-resource-limit .
+docker run --rm week13-resource-limit
+docker run --rm --cpus="0.5" --memory="256m" week13-resource-limit
+docker stats
+```
+**app.py**
+```bash
+import time
+
+buffer_memori = []
+putaran = 1
+
+print("=== Uji Konsumsi Resource Docker ===")
+print("Program berjalan terus, hentikan dengan Ctrl + C\n")
+
+try:
+    while True:
+        # Beban CPU (operasi aritmatika)
+        hasil = sum(i * 2 for i in range(400_000))
+
+        # Beban Memori (±4 MB setiap putaran)
+        blok = "A" * 4_000_000
+        buffer_memori.append(blok)
+
+        print(
+            f"Putaran ke-{putaran} | "
+            f"Hasil proses: {hasil} | "
+            f"Estimasi penggunaan memori: {putaran * 4} MB"
+        )
+
+        putaran += 1
+        time.sleep(1)
+
+except MemoryError:
+    print("⚠️  Program dihentikan: batas memori container tercapai.")
+
+except KeyboardInterrupt:
+    print("\n⛔ Program dihentikan oleh pengguna.")
 ```
 
+**Dockerfile**
+```bash
+FROM python:3.10-slim
+
+WORKDIR /usr/src/app
+
+COPY app.py .
+ENTRYPOINT ["python", "app.py"]
+```
 ---
 
-## Hasil Eksekusi
-Sertakan screenshot hasil percobaan atau diagram:
-![Screenshot hasil](screenshots/example.png)
+## Hasil Eksekusi dan Analisis
+**Build Image Docker**
+![alt text](<screenshots/build_image.png>)
+- Hasil pengujian menunjukkan bahwa proses build Docker image berjalan dengan lancar tanpa error. Dockerfile berhasil dieksekusi menggunakan base image             `python:3.10-slim`, dan file aplikasi dapat disalin dengan baik ke dalam image.
 
----
+##
 
-## Analisis
-- Jelaskan makna hasil percobaan.  
-- Hubungkan hasil dengan teori (fungsi kernel, system call, arsitektur OS).  
-- Apa perbedaan hasil di lingkungan OS berbeda (Linux vs Windows)?  
+**Container Tanpa Limit Resource**
+![alt text](<screenshots/tanpa_limit.png>)
+- Hasil pengamatan memperlihatkan bahwa container Docker dapat menjalankan program uji resource secara berulang tanpa hambatan. Setiap iterasi menghasilkan nilai   perhitungan CPU yang konsisten, sedangkan konsumsi memori mengalami peningkatan secara bertahap dari nilai rendah hingga melebihi 140 MB. Kondisi ini             menunjukkan bahwa penggunaan CPU dan memori terus bertambah karena container dijalankan tanpa batasan resource.
+
+##
+
+**Container dengan Limit Resource**
+![alt text](<screenshots/limit.png>)
+- Selanjutnya, container dijalankan dengan pembatasan CPU dan memori menggunakan perintah:
+  
+  `docker run -it --cpus="0.5" --memory="64m" week13-resource-limit`
+
+  Hasil pengamatan menunjukkan bahwa penerapan pembatasan CPU 0,5 core dan memori 64 MB menyebabkan program tetap berjalan dengan hasil perhitungan yang stabil,    namun kecepatan eksekusi menjadi lebih lambat. Seiring peningkatan penggunaan memori hingga mendekati batas, kinerja program menurun dan berpotensi mengalami     penghentian atau error akibat keterbatasan resource.
+
+##
+
+**Monitoring `docker stats`**
+
+![alt text](<screenshots/docker_stats.png>)
+
+Berikut hasil monitoring `docker stats`:
+
+* Penggunaan CPU pada container **test-mac** sangat rendah, yaitu sekitar 0,01%.
+* Konsumsi memori tercatat sebesar 404 KiB dari total 7,67 GiB atau sekitar 0,01%.
+* Aktivitas jaringan (NET I/O) hampir tidak ada selama pemantauan.
+* Operasi I/O disk (BLOCK I/O) juga tergolong sangat kecil.
+* Jumlah proses (PIDS) yang berjalan hanya satu, menunjukkan beban container ringan dan stabil.
 
 ---
 
 ## Kesimpulan
-Tuliskan 2–3 poin kesimpulan dari praktikum ini.
+- Container tanpa pembatasan resource dapat menggunakan CPU dan memori secara bebas. Hal ini membuat program berjalan lebih cepat dan stabil.
+- Penerapan limit CPU dan memori menyebabkan kecepatan eksekusi program menurun.
+- Hasil monitoring menggunakan docker stats menunjukkan penggunaan resource yang lebih terkontrol pada container dengan limit. Pemantauan ini membantu memahami     kondisi kerja container secara real time.
 
 ---
 
@@ -146,8 +217,13 @@ Jika aplikasi menggunakan memori melebihi batas yang ditentukan, kinerja aplikas
 
 ## Refleksi Diri
 Tuliskan secara singkat:
-- Apa bagian yang paling menantang minggu ini?  
-- Bagaimana cara Anda mengatasinya?  
+- Apa bagian yang paling menantang minggu ini?
+  
+  Proses mengunduh dan memasang Docker karena laptop yang digunakan tidak mendukung versi aplikasi terbaru.
+  
+- Bagaimana cara Anda mengatasinya?
+  
+  Kendala tersebut diatasi dengan menggunakan versi Docker yang lebih lama agar tetap dapat menjalankan praktikum sesuai kebutuhan.
 
 ---
 
